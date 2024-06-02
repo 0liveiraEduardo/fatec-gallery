@@ -11,19 +11,22 @@ import {
 } from "@/components/ui/card";
 import { Folder } from "./page";
 import Link from "next/link";
+import { Trash } from "lucide-react"; // Assumindo que você está usando Heroicons
+import { DeleteButton } from "@/components/delete-album-button";
 
 export function AlbumCard({ folder }: { folder: Folder }) {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader>     
         <CardTitle>{folder.name}</CardTitle>
-        <CardDescription>All your {folder.name} images</CardDescription>
+        <CardDescription>Todas as imagens de {folder.name}</CardDescription>
       </CardHeader>
       <CardContent></CardContent>
       <CardFooter className="flex justify-between">
         <Button asChild>
-          <Link href={`/albums/${folder.name}`}>View Album</Link>
+          <Link href={`/albums/${folder.name}`}>Ver Álbum</Link>
         </Button>
+        <DeleteButton folderName={folder.name} /> {/* Usando o componente DeleteButton */}
       </CardFooter>
     </Card>
   );

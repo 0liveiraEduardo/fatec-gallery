@@ -11,11 +11,29 @@ import { SearchResult } from "@/app/gallery/page";
 import { useState } from "react";
 import Link from "next/link";
 import { Trash } from "lucide-react";
+import { deleteImage } from "./actions";
 
 
 export function ImageMenu({ image }: { image: SearchResult }) {
   const [open, setOpen] = useState(false);
 
+  const handleDelete = async () => {
+    try {
+      const result = await deleteImage(image.public_id);
+      console.log(result);
+      if (result.result === 'ok') {
+        deleteImage(image.public_id); // Chame a função de callback para atualizar o estado no componente pai
+        window.location.reload();
+      } else {
+        alert('Falha ao deletar a imagem.');
+      }
+    } catch (error) {
+      console.error('Erro ao deletar a imagem:', error);
+      alert('Erro ao deletar a imagem. Verifique o console para mais detalhes.');
+    }
+  };
+  
+  
   return (
     <div className="absolute top-2 right-2">
       <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -29,17 +47,13 @@ export function ImageMenu({ image }: { image: SearchResult }) {
             <AddToAlbumDialog image={image} onClose={() => setOpen(false)} />
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Button
+          <Button variant="ghost"
+              onClick={handleDelete}
               className="cursor-pointer flex justify-start pl-4"
-              asChild
-              variant="ghost"
+              
             >
-              <Link
-                href={`/edit?publicId=${encodeURIComponent(image.public_id)}`}
-              >
-                <Trash className="mr-2 w-4 h-4" />
-                Remover
-              </Link>
+              <Trash className="mr-2 w-4 h-4" />
+              Remover
             </Button>
           </DropdownMenuItem>
         </DropdownMenuContent>
