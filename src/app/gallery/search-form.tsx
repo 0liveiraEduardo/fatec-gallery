@@ -23,7 +23,7 @@ export function SearchForm({ initialSearch }: { initialSearch: string }) {
       }}
     >
       <Label htmlFor="tag-name" className="text-right">
-        Search By Tag
+        Pesquise por TAG
       </Label>
       <div className="flex gap-2">
         <Input
@@ -31,7 +31,7 @@ export function SearchForm({ initialSearch }: { initialSearch: string }) {
           id="tag-name"
           value={tagName}
         />
-        <Button type="submit">Search</Button>
+        <Button type="submit">Pesquisar</Button>
       </div>
     </form>
   );
