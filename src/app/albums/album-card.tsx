@@ -15,14 +15,14 @@ import { Trash } from "lucide-react"; // Assumindo que você está usando Heroic
 import { DeleteButton } from "@/components/delete-album-button";
 
 export function AlbumCard({ folder }: { folder: Folder }) {
-  
   console.log(`AlbumCard - Renderizando álbum: ${folder.name}`);
+  const formattedName = folder.name.replace(/\s/g, "_"); // Substitui espaços por underlines
 
   return (
     <Card>
       <CardHeader>     
-        <CardTitle>{folder.name}</CardTitle>
-        <CardDescription>Todas as imagens de {folder.name}</CardDescription>
+        <CardTitle>{formattedName}</CardTitle> {/* Renderiza o nome formatado */}
+        <CardDescription>Todas as imagens de {formattedName}</CardDescription> {/* Renderiza o nome formatado */}
       </CardHeader>
       <CardContent></CardContent>
       <CardFooter className="flex justify-between">

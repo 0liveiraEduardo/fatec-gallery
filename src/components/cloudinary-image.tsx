@@ -27,7 +27,7 @@ export function CloudinaryImage(
 
   return (
     <div className="relative">
-      <CldImage {...props} src={imageData.public_id} />
+      <CldImage {...props} src={imageData.public_id} data-imagedata={imageData} /> {/* Passa imagedata para data-imagedata */}
       {isFavorited ? (
         <FullHeart
           onClick={() => {
@@ -36,6 +36,7 @@ export function CloudinaryImage(
             );
             onUnheart?.(imageData);
             setIsFavorited(false);
+            console.log(`CloudinaryImage - Favorito: ${isFavorited}`); // Verifique o estado depois de remover
             startTransition(() => {
               console.log(
                 `CloudinaryImage - Atualizando estado do Cloudinary: ${imageData.public_id}`
@@ -52,6 +53,7 @@ export function CloudinaryImage(
               `CloudinaryImage - Adicionando imagem aos favoritos: ${imageData.public_id}`
             );
             setIsFavorited(true);
+            console.log(`CloudinaryImage - Favorito: ${isFavorited}`); // Verifique o estado depois de adicionar
             startTransition(() => {
               console.log(
                 `CloudinaryImage - Atualizando estado do Cloudinary: ${imageData.public_id}`
