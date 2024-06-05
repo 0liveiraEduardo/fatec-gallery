@@ -15,6 +15,9 @@ import { Trash } from "lucide-react"; // Assumindo que você está usando Heroic
 import { DeleteButton } from "@/components/delete-album-button";
 
 export function AlbumCard({ folder }: { folder: Folder }) {
+  
+  console.log(`AlbumCard - Renderizando álbum: ${folder.name}`);
+
   return (
     <Card>
       <CardHeader>     

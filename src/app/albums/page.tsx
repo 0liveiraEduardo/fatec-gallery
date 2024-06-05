@@ -9,6 +9,8 @@ export default async function AlbumsPage() {
     folders: Folder[];
   };
 
+  console.log("AlbumsPage - Álbuns encontrados:", folders);
+
   return (
     <section>
       <div className="flex flex-col gap-8">

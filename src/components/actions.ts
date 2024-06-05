@@ -28,24 +28,32 @@ export async function deleteImage(publicId: string) {
 
 // Função para deletar um álbum
 export async function deleteFolder(folderName: string) {
+  console.log(`deleteFolder - Iniciando exclusão do álbum: ${folderName}`);
   try {
-    // Exclua todos os recursos dentro da pasta
+    console.log(`deleteFolder - Excluindo recursos do álbum: ${folderName}`);
     const deleteResourcesResponse = await cloudinary.v2.api.delete_resources_by_prefix(folderName + "/", { resource_type: "image" });
-    
+    console.log(
+      `deleteFolder - Recursos excluídos do álbum: ${folderName}`,
+      deleteResourcesResponse.deleted_counts
+    );
     // Verifique se há recursos restantes e, se houver, continue tentando excluí-los
     if (deleteResourcesResponse.deleted_counts) {
       let remaining = deleteResourcesResponse.deleted_counts;
       while (remaining && Object.keys(remaining).length > 0) {
+        console.log(
+          `deleteFolder - Excluindo recursos restantes do álbum: ${folderName}`,
+          remaining
+        );
         const response = await cloudinary.v2.api.delete_resources_by_prefix(folderName + "/", { resource_type: "image" });
         remaining = response.deleted_counts;
       }
     }
 
-    // Exclua a pasta em si
+    console.log(`deleteFolder - Excluindo o álbum: ${folderName}`);
     await cloudinary.v2.api.delete_folder(folderName);
-    
+    console.log(`deleteFolder - Álbum excluído com sucesso: ${folderName}`);
   } catch (error) {
-    console.error('Erro ao deletar o álbum:', error);
+    console.error(`deleteFolder - Erro ao deletar o álbum: ${folderName}`, error);
     throw new Error('Falha ao deletar o álbum.');
   }
 }

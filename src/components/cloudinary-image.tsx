@@ -22,15 +22,24 @@ export function CloudinaryImage(
     imageData.tags.includes("favorite")
   );
 
+  console.log(`CloudinaryImage - Renderizando imagem: ${imageData.public_id}`);
+  console.log(`CloudinaryImage - Favorito: ${isFavorited}`);
+
   return (
     <div className="relative">
       <CldImage {...props} src={imageData.public_id} />
       {isFavorited ? (
         <FullHeart
           onClick={() => {
+            console.log(
+              `CloudinaryImage - Removendo imagem dos favoritos: ${imageData.public_id}`
+            );
             onUnheart?.(imageData);
             setIsFavorited(false);
             startTransition(() => {
+              console.log(
+                `CloudinaryImage - Atualizando estado do Cloudinary: ${imageData.public_id}`
+              );
               setAsFavoriteAction(imageData.public_id, false);
             });
           }}
@@ -39,8 +48,14 @@ export function CloudinaryImage(
       ) : (
         <Heart
           onClick={() => {
+            console.log(
+              `CloudinaryImage - Adicionando imagem aos favoritos: ${imageData.public_id}`
+            );
             setIsFavorited(true);
             startTransition(() => {
+              console.log(
+                `CloudinaryImage - Atualizando estado do Cloudinary: ${imageData.public_id}`
+              );
               setAsFavoriteAction(imageData.public_id, true);
             });
           }}

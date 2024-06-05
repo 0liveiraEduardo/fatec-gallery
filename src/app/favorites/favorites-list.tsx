@@ -13,6 +13,7 @@ export default function FavoritesList({
   const [resources, setResources] = useState(initialResources);
 
   useEffect(() => {
+    console.log("FavoritesList - Atualizando lista de favoritos...");
     setResources(initialResources);
   }, [initialResources]);
 
@@ -20,6 +21,9 @@ export default function FavoritesList({
     <ImageGrid
       images={resources}
       getImage={(imageData: SearchResult) => {
+        console.log(
+          "FavoritesList - Renderizando imagem favorita: ${imageData.public_id}"
+        );
         return (
           <CloudinaryImage
             key={imageData.public_id}
@@ -28,6 +32,9 @@ export default function FavoritesList({
             height="300"
             alt="an image of something"
             onUnheart={(unheartedResource) => {
+              console.log(
+                `FavoritesList - Removendo imagem favorita: ${unheartedResource.public_id}`
+              );
               setResources((currentResources) =>
                 currentResources.filter(
                   (resource) =>
