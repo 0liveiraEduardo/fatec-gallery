@@ -2,7 +2,7 @@
 
 import { SearchResult } from "@/app/gallery/page";
 import cloudinary from "cloudinary";
-import { useRouter } from "next/navigation";
+
 
 export async function addImageToAlbum(image: SearchResult, album: string) {
   await cloudinary.v2.api.create_folder(album);
@@ -29,7 +29,7 @@ export async function deleteImage(publicId: string) {
 
 // Função para deletar um álbum
 export async function deleteFolder(folderName: string) {
-  const router = useRouter();
+
   console.log(`deleteFolder - Iniciando exclusão do álbum: ${folderName}`);
   try {
     console.log(`deleteFolder - Excluindo recursos do álbum: ${folderName}`);
@@ -54,7 +54,7 @@ export async function deleteFolder(folderName: string) {
     console.log(`deleteFolder - Excluindo o álbum: ${folderName}`);
     await cloudinary.v2.api.delete_folder(folderName);
     console.log(`deleteFolder - Álbum excluído com sucesso: ${folderName}`);
-    router.push(`/albums`);
+
   } catch (error) {
     console.error(`deleteFolder - Erro ao deletar o álbum: ${folderName}`, error);
     throw new Error('Falha ao deletar o álbum.');
