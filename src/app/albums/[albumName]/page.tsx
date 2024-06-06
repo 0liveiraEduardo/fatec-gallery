@@ -19,7 +19,7 @@ export default async function GalleryPage({
 
   return (
     <section>
-      <ForceRefresh />
+      
 
       <div className="flex flex-col gap-8">
         <div className="flex justify-between">
