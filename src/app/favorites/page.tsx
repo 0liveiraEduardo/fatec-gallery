@@ -30,3 +30,13 @@ export default async function FavoritesPage() {
     </section>
   );
 }
+
+export const getServerSideProps = async () => {
+  const results = (await cloudinary.v2.search
+    .expression("resource_type:image AND tags=favorite")
+    .sort_by("created_at", "desc")
+    .with_field("tags")
+    .max_results(30)
+    .execute()) as { resources: SearchResult[] };
+  return { props: { resources: results.resources } };
+};
