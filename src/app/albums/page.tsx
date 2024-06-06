@@ -1,6 +1,5 @@
 import cloudinary from "cloudinary";
 import { AlbumCard } from "./album-card";
-import { GetServerSideProps } from "next";
 
 export type Folder = { name: string; path: string };
 
@@ -28,10 +27,3 @@ export default async function AlbumsPage() {
     </section>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const { folders } = await cloudinary.v2.api.root_folders() as {
-    folders: Folder[];
-  };
-  return { props: { folders } };
-};
