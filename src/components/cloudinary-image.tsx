@@ -7,6 +7,7 @@ import { FullHeart } from "@/components/icons/full-heart";
 import { SearchResult } from "@/app/gallery/page";
 import { setAsFavoriteAction } from "@/app/gallery/actions";
 import { ImageMenu } from "./image-menu";
+import { ForceRefresh } from "./force-refresh";
 
 export function CloudinaryImage(
   props: {
@@ -22,25 +23,15 @@ export function CloudinaryImage(
     imageData.tags.includes("favorite")
   );
 
-  console.log(`CloudinaryImage - Renderizando imagem: ${imageData.public_id}`);
-  console.log(`CloudinaryImage - Favorito: ${isFavorited}`);
-
   return (
     <div className="relative">
-      <CldImage {...props} src={imageData.public_id} data-imagedata={imageData} /> {/* Passa imagedata para data-imagedata */}
+      <CldImage {...props} src={imageData.public_id} />
       {isFavorited ? (
         <FullHeart
           onClick={() => {
-            console.log(
-              `CloudinaryImage - Removendo imagem dos favoritos: ${imageData.public_id}`
-            );
             onUnheart?.(imageData);
             setIsFavorited(false);
-            console.log(`CloudinaryImage - Favorito: ${isFavorited}`); // Verifique o estado depois de remover
             startTransition(() => {
-              console.log(
-                `CloudinaryImage - Atualizando estado do Cloudinary: ${imageData.public_id}`
-              );
               setAsFavoriteAction(imageData.public_id, false);
             });
           }}
@@ -49,15 +40,8 @@ export function CloudinaryImage(
       ) : (
         <Heart
           onClick={() => {
-            console.log(
-              `CloudinaryImage - Adicionando imagem aos favoritos: ${imageData.public_id}`
-            );
             setIsFavorited(true);
-            console.log(`CloudinaryImage - Favorito: ${isFavorited}`); // Verifique o estado depois de adicionar
             startTransition(() => {
-              console.log(
-                `CloudinaryImage - Atualizando estado do Cloudinary: ${imageData.public_id}`
-              );
               setAsFavoriteAction(imageData.public_id, true);
             });
           }}

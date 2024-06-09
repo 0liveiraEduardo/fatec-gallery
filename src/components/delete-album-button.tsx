@@ -14,11 +14,11 @@ export function DeleteButton({ folderName }: { folderName: string }) {
       await deleteFolder(folderName);
       window.location.reload();
     } catch (error) {
-      // Lidar com erros aqui
       console.error("Erro ao remover o álbum:", error);
     } finally {
       setIsLoading(false);
     }
+
   };
 
   return (

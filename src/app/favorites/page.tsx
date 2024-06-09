@@ -1,24 +1,18 @@
 import cloudinary from "cloudinary";
 import { SearchResult } from "../gallery/page";
 import FavoritesList from "./favorites-list";
+import { ForceRefresh } from "@/components/force-refresh";
 
-export default async function FavoritesPage() {
-
-  console.log("FavoritesPage - Iniciando busca de favoritos...");
-
+export default async function FavoritesPage(){
   const results = (await cloudinary.v2.search
     .expression("resource_type:image AND tags=favorite")
     .sort_by("created_at", "desc")
     .with_field("tags")
     .max_results(30)
     .execute()) as { resources: SearchResult[] };
-
-    console.log("FavoritesPage - Favoritos encontrados:", results);
-
+    
   return (
     <section>
-      
-
       <div className="flex flex-col gap-8">
         <div className="flex justify-between">
           <h1 className="text-4xl font-bold">Favoritos</h1>
@@ -26,6 +20,7 @@ export default async function FavoritesPage() {
 
         <FavoritesList initialResources={results.resources} />
       </div>
+      <ForceRefresh /> 
     </section>
   );
 }

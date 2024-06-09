@@ -3,6 +3,7 @@ import cloudinary from "cloudinary";
 import GalleryGrid from "./gallery-grid";
 import { SearchForm } from "./search-form";
 
+
 export type SearchResult = {
   public_id: string;
   tags: string[];
@@ -15,6 +16,7 @@ export default async function GalleryPage({
     search: string;
   };
 }) {
+  
   const results = (await cloudinary.v2.search
     .expression(`resource_type:image${search ? ` AND tags=${search}` : ""}`)
     .sort_by("created_at", "desc")
@@ -32,7 +34,8 @@ export default async function GalleryPage({
 
         <SearchForm initialSearch={search} />
 
-        <GalleryGrid images={results.resources} />
+        <GalleryGrid images={results.resources}/>
+    
       </div>
     </section>
   );
