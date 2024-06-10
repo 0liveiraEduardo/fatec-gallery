@@ -11,7 +11,7 @@ export function DeleteButton({ folderName }: { folderName: string }) {
   const handleDeleteAlbum = async () => {
     setIsLoading(true);
     try {
-      await deleteFolder(folderName);
+      await deleteFolder(decodeURIComponent(folderName));
       window.location.reload();
     } catch (error) {
       console.error("Erro ao remover o álbum:", error);

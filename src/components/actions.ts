@@ -3,9 +3,10 @@
 import { SearchResult } from "@/app/gallery/page";
 import cloudinary from "cloudinary";
 
+// ... outras funções
 
 export async function addImageToAlbum(image: SearchResult, album: string) {
-  await cloudinary.v2.api.create_folder(encodeURIComponent(album));
+  await cloudinary.v2.api.create_folder(encodeURIComponent(album)); // Codificar o nome do álbum 
 
   let parts = image.public_id.split("/");
   if (parts.length > 1) {
@@ -13,50 +14,59 @@ export async function addImageToAlbum(image: SearchResult, album: string) {
   }
   const publicId = parts.join("/");
 
-  await cloudinary.v2.uploader.rename(image.public_id, `${encodeURIComponent(album)}/${publicId}`);
+  await cloudinary.v2.uploader.rename(
+    image.public_id,
+    `${encodeURIComponent(album)}/${publicId}` // Codificar o nome do álbum
+  );
 }
 
-// Função para deletar a imagem
 export async function deleteImage(publicId: string) {
   try {
-    const result = await cloudinary.v2.uploader.destroy(publicId, { invalidate: true });
+    const result = await cloudinary.v2.uploader.destroy(publicId, {
+      invalidate: true,
+    });
     return result;
   } catch (error) {
-    console.error('Erro ao deletar a imagem:', error);
-    throw new Error('Falha ao deletar a imagem.');
+    console.error("Erro ao deletar a imagem:", error);
+    throw new Error("Falha ao deletar a imagem.");
   }
 }
 
-// Função para deletar um álbum
 export async function deleteFolder(folderName: string) {
-
-  console.log(`deleteFolder - Iniciando exclusão do álbum: ${folderName}`);
   try {
-    console.log(`deleteFolder - Excluindo recursos do álbum: ${folderName}`);
-    const deleteResourcesResponse = await cloudinary.v2.api.delete_resources_by_prefix(folderName + "/", { resource_type: "image" });
-    console.log(
-      `deleteFolder - Recursos excluídos do álbum: ${folderName}`,
-      deleteResourcesResponse.deleted_counts
+    // Decodificar o nome da pasta para usar em delete_resources_by_prefix
+    const decodedFolderName = decodeURIComponent(folderName);
+
+    // Deletar os recursos dentro da pasta
+    const deleteResourcesResponse = await cloudinary.v2.api.delete_resources_by_prefix(
+      decodedFolderName + "/",
+      { resource_type: "image" }
     );
-    // Verifique se há recursos restantes e, se houver, continue tentando excluí-los
+
+    // Verificar se a resposta contém informações sobre recursos deletados
     if (deleteResourcesResponse.deleted_counts) {
       let remaining = deleteResourcesResponse.deleted_counts;
       while (remaining && Object.keys(remaining).length > 0) {
-        console.log(
-          `deleteFolder - Excluindo recursos restantes do álbum: ${folderName}`,
-          remaining
+        // Deletar os recursos restantes, caso a primeira tentativa não tenha deletado todos
+        const response = await cloudinary.v2.api.delete_resources_by_prefix(
+          decodedFolderName + "/",
+          { resource_type: "image" }
         );
-        const response = await cloudinary.v2.api.delete_resources_by_prefix(folderName + "/", { resource_type: "image" });
         remaining = response.deleted_counts;
       }
     }
 
-    console.log(`deleteFolder - Excluindo o álbum: ${folderName}`);
-    await cloudinary.v2.api.delete_folder(folderName);
-    console.log(`deleteFolder - Álbum excluído com sucesso: ${folderName}`);
-
+    // Deletar a pasta usando o nome codificado (com %20)
+    await cloudinary.v2.api.delete_folder(folderName); // Sem decodeURIComponent
   } catch (error) {
-    console.error(`deleteFolder - Erro ao deletar o álbum: ${folderName}`, error);
-    throw new Error('Falha ao deletar o álbum.');
+    throw new Error("Falha ao deletar o álbum.");
   }
+}
+
+export async function addTag(image: SearchResult, tagName: string) {
+  await cloudinary.v2.uploader.add_tag(tagName, [image.public_id]);
+}
+
+export async function removeTag(image: SearchResult, tagName: string) {
+  await cloudinary.v2.uploader.remove_tag(tagName, [image.public_id]);
 }

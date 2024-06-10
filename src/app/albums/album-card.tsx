@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,25 +10,24 @@ import {
 } from "@/components/ui/card";
 import { Folder } from "./page";
 import Link from "next/link";
-import { Trash } from "lucide-react"; // Assumindo que você está usando Heroicons
+import { Trash } from "lucide-react";
 import { DeleteButton } from "@/components/delete-album-button";
 
 export function AlbumCard({ folder }: { folder: Folder }) {
   console.log(`AlbumCard - Renderizando álbum: ${folder.name}`);
-  const formattedName = folder.name.replace(/\s/g, "_"); // Substitui espaços por underlines
 
   return (
     <Card>
       <CardHeader>     
-        <CardTitle>{formattedName}</CardTitle> {/* Renderiza o nome formatado */}
-        <CardDescription>Todas as imagens de {formattedName}</CardDescription> {/* Renderiza o nome formatado */}
+        <CardTitle>{folder.name}</CardTitle>
+        <CardDescription>Todas as imagens de {folder.name}</CardDescription>
       </CardHeader>
       <CardContent></CardContent>
       <CardFooter className="flex justify-between">
         <Button asChild>
           <Link href={`/albums/${folder.name}`}>Ver Álbum</Link>
         </Button>
-        <DeleteButton folderName={folder.name} /> {/* Usando o componente DeleteButton */}
+        <DeleteButton folderName={decodeURIComponent(folder.name)} />
       </CardFooter>
     </Card>
   );

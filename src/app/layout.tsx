@@ -83,7 +83,7 @@ async function SideMenu() {
                 className="w-full justify-start flex gap-2"
               >
                 <Link className="pl-8" href={`/albums/${folder.path}`}>
-                  {folder.name}
+                  {decodeURI(folder.name)}
                 </Link>
               </Button>
             ))}

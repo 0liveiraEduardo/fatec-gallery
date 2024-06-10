@@ -13,9 +13,9 @@ export default function FavoritesList({
 }) {
   const [resources, setResources] = useState(initialResources);
 
-  useEffect(() => {
+  /*useEffect(() => {
     setResources(initialResources);
-  }, [initialResources]);
+  }, [initialResources]);*/
 
   return (
     <ImageGrid

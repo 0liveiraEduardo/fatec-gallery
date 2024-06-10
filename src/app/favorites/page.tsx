@@ -3,9 +3,15 @@ import { SearchResult } from "../gallery/page";
 import FavoritesList from "./favorites-list";
 import { ForceRefresh } from "@/components/force-refresh";
 
-export default async function FavoritesPage(){
+export default async function FavoritesPage({
+  searchParams: { search },
+}: {
+  searchParams: {
+    search: string;
+  };
+}) {
   const results = (await cloudinary.v2.search
-    .expression("resource_type:image AND tags=favorite")
+    .expression(`resource_type:image AND tags=favorite${search ? ` AND tags=${search}` : ""}`)
     .sort_by("created_at", "desc")
     .with_field("tags")
     .max_results(30)
@@ -20,7 +26,7 @@ export default async function FavoritesPage(){
 
         <FavoritesList initialResources={results.resources} />
       </div>
-      <ForceRefresh /> 
+      <ForceRefresh />;
     </section>
   );
 }

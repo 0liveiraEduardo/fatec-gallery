@@ -9,10 +9,10 @@ import { Menu } from "./icons/menu";
 import { AddToAlbumDialog } from "./add-to-album-dialog";
 import { SearchResult } from "@/app/gallery/page";
 import { useState } from "react";
-import Link from "next/link";
 import { Trash } from "lucide-react";
 import { deleteImage } from "./actions";
-
+import { AddTagsDialog } from "./add-tag";
+import { RemoveTagsDialog } from "./remove-tag";
 
 export function ImageMenu({ image }: { image: SearchResult }) {
   const [open, setOpen] = useState(false);
@@ -47,14 +47,20 @@ export function ImageMenu({ image }: { image: SearchResult }) {
             <AddToAlbumDialog image={image} onClose={() => setOpen(false)} />
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-          <Button variant="ghost"
-              onClick={handleDelete}
-              className="cursor-pointer flex justify-start pl-4"
-              
-            >
-              <Trash className="mr-2 w-4 h-4" />
-              Remover
-            </Button>
+            <AddTagsDialog image={image} onClose={() => setOpen(false)} />
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <RemoveTagsDialog image={image} onClose={() => setOpen(false)} />
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Button variant="ghost"
+                onClick={handleDelete}
+                className="cursor-pointer flex justify-start pl-4"
+                
+              >
+                <Trash className="mr-2 w-4 h-4" />
+                Remover
+              </Button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
